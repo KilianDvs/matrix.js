@@ -19,6 +19,8 @@ export class Matrix<Data> {
     this.width = width
 
     this.input.push(row)
+    
+    this.height = this.input.length
   }
 
   addCol(col: Data[]) {
@@ -30,6 +32,8 @@ export class Matrix<Data> {
     this.height = height
 
     this.input.forEach((row, i) => row.push(col[i]))
+    
+    this.width = this.input[0].length
   }
 
   addRows(...rows: Data[][]) {
