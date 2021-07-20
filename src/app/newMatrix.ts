@@ -19,6 +19,10 @@ export class Matrix<Data> {
     this.width = width
 
     this.input.push(row)
+    
+    this.height = this.input.length
+    
+    return this
   }
 
   addCol(col: Data[]) {
@@ -30,13 +34,21 @@ export class Matrix<Data> {
     this.height = height
 
     this.input.forEach((row, i) => row.push(col[i]))
+    
+    this.width = this.input[0].length
+    
+    return this
   }
 
   addRows(...rows: Data[][]) {
     for (const row of rows) this.addRow(row)
+  
+    return this
   }
 
   addCols(...cols: Data[][]) {
     for (const col of cols) this.addCol(col)
+  
+    return this
   }
 }
