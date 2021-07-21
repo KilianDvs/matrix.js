@@ -107,7 +107,7 @@ export class Matrix<Data> {
       for(let x = arg1; x <= end; x++) this.removeCol(x)
     }
     else if(typeof arg1 === "number" && typeof end === "undefined") {
-      for(let x = this.width-arg1; x < this.width; x++) this.removeCol(x)
+      for(let x = this.width-arg1-1; x < this.width; x++) this.removeCol(x)
     }
     else {
       throw new Error(`Given arguments are incorrect`)
