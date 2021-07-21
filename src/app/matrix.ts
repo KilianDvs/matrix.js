@@ -1,22 +1,30 @@
+"use strict"
+
 export type Row<Data> = Cell<Data>[]
 export type Col<Data> = Row<Data>
 export type Table<Data> = Row<Data>[]
 export type Values<Data> = Data[][]
-export interface Cell<Data> {
+export type Cell<Data> = {
   data: Data
   [k: string]: any
 }
 
 export class Matrix<Data> {
   private _input: Table<Data> = []
-  private _width: number = null
-  private _height: number = null
 
   constructor(input: Values<Data>, private asColumns = false) {
     if (input.length === 0) return
 
     if (asColumns) this.addCols(...input)
     else this.addRows(...input)
+  }
+
+  get width() {
+    return Math.max(...this.rows.map((row) => row.length))
+  }
+
+  get height() {
+    return Math.max(...this.cols.map((col) => col.length))
   }
 
   get rows(): Table<Data> {
@@ -26,13 +34,13 @@ export class Matrix<Data> {
   get cols(): Table<Data> {
     const cols: Table<Data> = []
 
-    for (let x = 0; x < this._width; x++) cols.push(this.getCol(x))
+    for (let x = 0; x < this.rows.length; x++) cols.push(this.getCol(x))
 
     return cols
   }
 
   get values(): Values<Data> {
-    return this._input.map((row) => {
+    return this.rows.map((row) => {
       return row.map((cell) => cell.data)
     })
   }
@@ -58,22 +66,14 @@ export class Matrix<Data> {
   }
 
   removeRow(at?: number) {
-    if (this._height === undefined || this._height === 0) return
-
-    this._height--
-
-    if (at === undefined) this._input.pop()
-    else this._input.splice(at, 1)
+    if (at === undefined) this.rows.pop()
+    else this.rows.splice(at, 1)
 
     return this
   }
 
   removeCol(at?: number) {
-    if (this._width === undefined || this._width === 0) return
-
-    this._width--
-
-    this._input.forEach((row) => {
+    this.forRows((row) => {
       if (at === undefined) row.pop()
       else row.splice(at, 1)
     })
@@ -82,14 +82,6 @@ export class Matrix<Data> {
   }
 
   addRow(input: Data[], at?: number) {
-    const width = input.length
-
-    if (this._width !== null && this._width !== width)
-      throw new Error("Invalid row length, expected width: " + this._width)
-
-    this._width = width
-    this._height++
-
     const row: Row<Data> = input.map((data) => ({ data }))
 
     if (at === undefined) this._input.push(row)
@@ -99,14 +91,6 @@ export class Matrix<Data> {
   }
 
   addCol(input: Data[], at?: number) {
-    const height = input.length
-
-    if (this._height !== null && this._height !== height)
-      throw new Error("Invalid col length, expected height: " + this._width)
-
-    this._height = height
-    this._width++
-
     const col: Col<Data> = input.map((data) => ({ data }))
 
     this._input.forEach((row, i) => {
