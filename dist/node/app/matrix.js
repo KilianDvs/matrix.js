@@ -8,9 +8,9 @@ class Matrix {
         if (input.length === 0)
             return;
         if (asColumns)
-            this.addCols(...input);
+            this.addCols(input);
         else
-            this.addRows(...input);
+            this.addRows(input);
     }
     get width() {
         return Math.max(...this.rows.map((row) => row.length));
@@ -80,14 +80,22 @@ class Matrix {
         });
         return this;
     }
-    addRows(...input) {
-        for (const row of input)
-            this.addRow(row);
+    addRows(input, at) {
+        if (at || at === 0)
+            for (const col of input)
+                this.addRow(col, at++);
+        else
+            for (const col of input)
+                this.addRow(col);
         return this;
     }
-    addCols(...input) {
-        for (const col of input)
-            this.addCol(col);
+    addCols(input, at) {
+        if (at || at === 0)
+            for (const col of input)
+                this.addCol(col, at++);
+        else
+            for (const col of input)
+                this.addCol(col);
         return this;
     }
     clone() {
@@ -98,6 +106,19 @@ class Matrix {
     }
     toString() {
         return JSON.stringify(this.values);
+    }
+    forZone(start, end, callback) {
+        const cells = [];
+        for (let x = start[0]; x < end[0] + 1; x++) {
+            for (let y = start[1]; y < end[1] + 1; y++) {
+                if (!this._input[y] || !this._input[y][x])
+                    throw new Error(`No cell found at position : ${x} ${y}`);
+                cells.push(this._input[y][x]);
+            }
+        }
+        cells.forEach((cell, i) => {
+            callback(cell, i, cells);
+        });
     }
 }
 exports.Matrix = Matrix;

@@ -8,6 +8,7 @@ export type Cell<Data> = {
   data: Data
   [k: string]: any
 }
+export type Vector = [number, number]
 
 export class Matrix<Data> {
   private _input: Table<Data> = []
@@ -92,7 +93,7 @@ export class Matrix<Data> {
 
   addCol(input: Data[], at?: number) {
     const col: Col<Data> = input.map((data) => ({ data }))
-
+  
     this._input.forEach((row, i) => {
       if (at === undefined) row.push(col[i])
       else row.splice(at, 0, col[i])
@@ -102,16 +103,16 @@ export class Matrix<Data> {
   }
 
   addRows(input: Data[][], at?: number) {
-    input = input.reverse()
-    for (const row of input) this.addRow(row, at)
+    if(at || at === 0) for (const col of input) this.addRow(col, at++)
+    else for (const col of input) this.addRow(col)
 
     return this
   }
 
   addCols(input: Data[][], at?: number) {
-    input = input.reverse()
-    for (const col of input) this.addCol(col, at)
-
+    if(at || at === 0) for (const col of input) this.addCol(col, at++)
+    else for (const col of input) this.addCol(col)
+    
     return this
   }
 
@@ -125,5 +126,19 @@ export class Matrix<Data> {
 
   toString() {
     return JSON.stringify(this.values)
+  }
+  
+  forZone(start: Vector, end: Vector, callback : ((cell: Cell<Data>, i:number, cells:Cell<Data>[]) => void)){
+    const cells: Cell<Data>[] = []
+    for (let x = start[0]; x < end[0]+1; x++) {
+      for (let y = start[1]; y < end[1]+1; y++) {
+        if(!this._input[y] || !this._input[y][x])
+          throw new Error(`No cell found at position : ${x} ${y}`)
+        cells.push(this._input[y][x])
+      }
+    }
+    cells.forEach((cell, i)=>{
+      callback(cell, i, cells)
+    })
   }
 }

@@ -6,6 +6,7 @@ export declare type Cell<Data> = {
     data: Data;
     [k: string]: any;
 };
+export declare type Vector = [number, number];
 export declare class Matrix<Data> {
     private asColumns;
     private _input;
@@ -23,9 +24,10 @@ export declare class Matrix<Data> {
     removeCol(at?: number): this;
     addRow(input: Data[], at?: number): this;
     addCol(input: Data[], at?: number): this;
-    addRows(...input: Data[][]): this;
-    addCols(...input: Data[][]): this;
+    addRows(input: Data[][], at?: number): this;
+    addCols(input: Data[][], at?: number): this;
     clone(): Matrix<Data>;
     toJSON(): Values<Data>;
     toString(): string;
+    forZone(start: Vector, end: Vector, callback: ((cell: Cell<Data>, i: number, cells: Cell<Data>[]) => void)): void;
 }
