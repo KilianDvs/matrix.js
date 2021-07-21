@@ -81,7 +81,7 @@ export class Matrix<Data> {
       for(let x = arg1; x <= end; x++) this.removeRow(x)
     }
     else if(typeof arg1 === "number" && typeof end === "undefined") {
-      for(let x = this.height-arg1; x < this.height; x++) this.removeRow(x)
+      for(let x = this.height-arg1-1; x < this.height; x++) this.removeRow(x)
     }
     else {
       throw new Error(`Given arguments are incorrect`)
