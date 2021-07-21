@@ -73,11 +73,45 @@ export class Matrix<Data> {
     return this
   }
 
+  removeRows(arg1: Array<number> | number, end?: number) {//arg1 = list (si array) ou from (si number)
+    if(typeof arg1 === "object" && typeof end === "undefined") {
+      for (const x of arg1) this.removeRow(x)
+    }
+    else if(typeof arg1 === "number" && typeof end === "number") {
+      for(let x = arg1; x <= end; x++) this.removeRow(x)
+    }
+    else if(typeof arg1 === "number" && typeof end === "undefined") {
+      for(let x = this.height-arg1; x < this.height; x++) this.removeRow(x)
+    }
+    else {
+      throw new Error(`Given arguments are incorrect`)
+    }
+
+    return this
+  }
+
   removeCol(at?: number) {
     this.forRows((row) => {
       if (at === undefined) row.pop()
       else row.splice(at, 1)
     })
+
+    return this
+  }
+
+  removeCols(arg1: Array<number> | number, end?: number) {//arg1 = list (si array) ou from (si number)
+    if(typeof arg1 === "object" && typeof end === "undefined") {
+      for (const x of arg1) this.removeCol(x)
+    }
+    else if(typeof arg1 === "number" && typeof end === "number") {
+      for(let x = arg1; x <= end; x++) this.removeCol(x)
+    }
+    else if(typeof arg1 === "number" && typeof end === "undefined") {
+      for(let x = this.width-arg1; x < this.width; x++) this.removeCol(x)
+    }
+    else {
+      throw new Error(`Given arguments are incorrect`)
+    }
 
     return this
   }
