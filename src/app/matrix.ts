@@ -15,8 +15,8 @@ export class Matrix<Data> {
   constructor(input: Values<Data>, private asColumns = false) {
     if (input.length === 0) return
 
-    if (asColumns) this.addCols(...input)
-    else this.addRows(...input)
+    if (asColumns) this.addCols(input)
+    else this.addRows(input)
   }
 
   get width() {
@@ -101,14 +101,16 @@ export class Matrix<Data> {
     return this
   }
 
-  addRows(...input: Data[][]) {
-    for (const row of input) this.addRow(row)
+  addRows(input: Data[][], at?: number) {
+    input = input.reverse()
+    for (const row of input) this.addRow(row, at)
 
     return this
   }
 
-  addCols(...input: Data[][]) {
-    for (const col of input) this.addCol(col)
+  addCols(input: Data[][], at?: number) {
+    input = input.reverse()
+    for (const col of input) this.addCol(col, at)
 
     return this
   }
