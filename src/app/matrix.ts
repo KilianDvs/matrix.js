@@ -35,7 +35,7 @@ export class Matrix<Data> {
   get cols(): Table<Data> {
     const cols: Table<Data> = []
 
-    for (let x = 0; x < this.rows.length; x++) cols.push(this.getCol(x))
+    for (let x = 0; x < this.width; x++) cols.push(this.getCol(x))
 
     return cols
   }
