@@ -73,18 +73,23 @@ export class Matrix<Data> {
     return this
   }
 
-  removeRows(arg1: Array<number> | number, end?: number) {//arg1 = list (si array) ou from (si number)
+  removeRows(arg1: Array<number> | number, end?: number) {
     if(typeof arg1 === "object" && typeof end === "undefined") {
-      arg1 = arg1.sort((a,b) => b-a)
-      for (const x of arg1) this.removeRow(x)
+      let count = 0
+      arg1 = arg1.sort((a,b) => a-b)
+      for (const x of arg1) {
+        this.removeRow(x-count)
+        count++
+      }
     }
     else if(typeof arg1 === "number" && typeof end === "number") {
-      for(let x = arg1; x <= end; x++) {
+      for (let x = arg1; x <= end; x++) {
         this.removeRow(arg1)
       }
     }
     else if(typeof arg1 === "number" && typeof end === "undefined") {
-      for(let x = this.height-arg1-1; x < this.height; x++) this.removeRow(x)
+      for(let x = 0; x < arg1; x++)
+        this.removeRow(this.height-1)
     }
     else {
       throw new Error(`Given arguments are incorrect`)
@@ -102,18 +107,23 @@ export class Matrix<Data> {
     return this
   }
 
-  removeCols(arg1: Array<number> | number, end?: number) {//arg1 = list (si array) ou from (si number)
+  removeCols(arg1: Array<number> | number, end?: number) {
     if(typeof arg1 === "object" && typeof end === "undefined") {
-      arg1 = arg1.sort((a,b) => b-a)
-      for (const x of arg1) this.removeCol(x)
+      let count = 0
+      arg1 = arg1.sort((a,b) => a-b)
+      for (const x of arg1) {
+        this.removeCol(x-count)
+        count++
+      }
     }
     else if(typeof arg1 === "number" && typeof end === "number") {
-      for(let x = arg1; x <= end; x++) {
+      for (let x = arg1; x <= end; x++) {
         this.removeCol(arg1)
       }
     }
     else if(typeof arg1 === "number" && typeof end === "undefined") {
-      for(let x = this.height-arg1-1; x < this.height; x++) this.removeCol(x)
+      for(let x = 0; x < arg1; x++)
+        this.removeCol(this.width-1)
     }
     else {
       throw new Error(`Given arguments are incorrect`)
