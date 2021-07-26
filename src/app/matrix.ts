@@ -190,6 +190,8 @@ export class Matrix<Data> {
     cells.forEach((cell, i)=>{
       callback(cell, i, cells)
     })
+    
+    return this
   }
   
   positionOf(value: Data): Vector[]{
