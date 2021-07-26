@@ -191,4 +191,14 @@ export class Matrix<Data> {
       callback(cell, i, cells)
     })
   }
+  
+  positionOf(value: Data){
+    const out = []
+    this._input.forEach((row, y)=>{
+      row.forEach((cell, x)=>{
+        if(cell.data === value) out.push([x, y])
+      })
+    })
+    return out
+  }
 }
