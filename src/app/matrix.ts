@@ -190,5 +190,17 @@ export class Matrix<Data> {
     cells.forEach((cell, i)=>{
       callback(cell, i, cells)
     })
+    
+    return this
+  }
+  
+  positionOf(value: Data): Vector[]{
+    const out:Vector[] = []
+    this._input.forEach((row, y)=>{
+      row.forEach((cell, x)=>{
+        if(cell.data === value) out.push([x, y])
+      })
+    })
+    return out
   }
 }
