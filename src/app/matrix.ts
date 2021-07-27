@@ -187,9 +187,7 @@ export class Matrix<Data> {
         cells.push(this._input[y][x])
       }
     }
-    cells.forEach((cell, i)=>{
-      callback(cell, i, cells)
-    })
+    cells.forEach(callback)
     
     return this
   }
