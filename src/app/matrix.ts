@@ -192,12 +192,23 @@ export class Matrix<Data> {
     return this
   }
   
-  positionOf(value: Data): Vector[]{
-    const out:Vector[] = []
-    this._input.forEach((row, y)=>{
-      row.forEach((cell, x)=>{
-        if(cell.data === value) out.push([x, y])
+  positionOf(value: Data): Vector[] {
+    const out: Vector[] = []
+    this._input.forEach((row, y) => {
+      row.forEach((cell, x) => {
+        if (cell.data === value) out.push([x, y])
       })
+    })
+    return out
+  }
+  
+  groupBy(type: "row" | "col", pos: number) {
+    const data: Row<Data>[] = type === "row" ? this.rows : this.cols
+    const dataTwo: Row<Data>[] = type === "row" ? this.cols : this.rows
+    const possibilities: Set<Data> = new Set(data[pos].map(c => c.data))
+    let out: Map<Data, Row<Data>[]> = new Map()
+    possibilities.forEach(possibility => {
+      out.set(possibility, dataTwo.filter(row => row[pos].data === possibility))
     })
     return out
   }
