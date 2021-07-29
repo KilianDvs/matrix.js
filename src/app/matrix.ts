@@ -12,10 +12,12 @@ export type Vector = [number, number]
 
 export class Matrix<Data> {
   private _input: Table<Data> = []
-
-  constructor(input: Values<Data>, private asColumns = false) {
+  defaultData: Data
+  
+  constructor(input: Values<Data>, defaultData: Data, private asColumns = false) {
+    this.defaultData = defaultData
     if (input.length === 0) return
-
+    
     if (asColumns) this.addCols(input)
     else this.addRows(input)
   }
