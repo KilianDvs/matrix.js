@@ -145,10 +145,14 @@ export class Matrix<Data> {
 
   addCol(input: Data[], at?: number) {
     const col: Col<Data> = input.map((data) => ({ data }))
-  
+    if(at === undefined) at = this.width | 0
+    
     this._input.forEach((row, i) => {
       if (at === undefined) row.push(col[i])
-      else row.splice(at, 0, col[i])
+      else {
+        while(this.width - 1 > row.length) row.push({data: this.defaultData })
+        row.splice(at, 0, col[i])
+      }
     })
 
     return this
@@ -169,7 +173,7 @@ export class Matrix<Data> {
   }
 
   clone() {
-    return new Matrix(this.toJSON(), this.asColumns)
+    return new Matrix(this.toJSON(),this.defaultData, this.asColumns)
   }
 
   toJSON(): Values<Data> {
