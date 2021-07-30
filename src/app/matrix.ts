@@ -147,6 +147,10 @@ export class Matrix<Data> {
     const col: Col<Data> = input.map((data) => ({ data }))
     if(at === undefined) at = this.width | 0
     
+    input.forEach((_,i)=>{
+      if(!this._input[i]) this._input[i] = []
+    })
+    
     this._input.forEach((row, i) => {
       if (at === undefined) row.push(col[i])
       else {
