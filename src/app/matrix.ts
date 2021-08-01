@@ -222,4 +222,51 @@ export class Matrix<Data> {
     })
     return out
   }
+
+  getDataFrom(matrix: Matrix<Data>, bridge: number, colsToTake: Array<number>, header = false) {
+    if(matrix.height < this.height) throw new Error("The array you're trying to get data from should be bigger than the target array.")
+    else {
+      if(matrix === this) throw new Error("You can't get data from the target array.")
+      else {
+        if(header === true) {
+          for(let i in this._input) {
+            if(i != "0") {
+              let pos = matrix.positionOf(this.getCol(bridge)[i].data)
+              if(pos.length === 0) {
+                for(let val in colsToTake) {
+                  this._input[i].push({ data: this.defaultData })
+                }
+              }
+              else {
+                for(let val of colsToTake) {
+                  this._input[i].push({ data: matrix._input[pos[0][1]][val].data })
+                }
+              }
+            }
+          }
+          for(let i of colsToTake)
+            this._input[0].push({ data: matrix._input[0][i].data })
+        }
+      else {
+        let i = 0
+        for(let val of this.getCol(bridge)) {
+            let pos = matrix.positionOf(val.data)
+            if(pos.length === 0) {
+              for(let j of colsToTake) {
+                this._input[i].push({ data: this.defaultData })
+              }
+              i++
+            }
+            else {
+              for(let j of colsToTake) {
+                this._input[i].push({ data: matrix._input[pos[0][1]][j].data })
+              }
+              i++
+            }
+          }
+        }
+      }
+    }
+    return this
+  }
 }
